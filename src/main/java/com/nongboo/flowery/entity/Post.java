@@ -18,11 +18,7 @@ public class Post {
     @Column(name = "post_id")
     private Long id;
 
-    @CreatedDate
-    @Column(updatable = false, nullable = false)
-    private LocalDateTime date; //이건 기간인거면 따로 클래스로 뺴야하는가
-
-    private String content;
+    private String date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,6 +26,5 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Todo> todoList = new ArrayList();
-
 
 }

@@ -17,8 +17,6 @@ public class Todo {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private int progress;
-
     private String content;
 
 }
