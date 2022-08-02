@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -26,6 +28,8 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //Category 관계를 어떻게 짜야 할까
-    //할일 완료 퍼센트
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Todo> todoList = new ArrayList();
+
+
 }
