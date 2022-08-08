@@ -27,4 +27,18 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Todo> todoList = new ArrayList();
 
+
+    public void setUser(User user){
+        this.user = user;
+        user.getPosts().add(this);
+    }
+
+    public static Post createPost(String date, User user){
+        Post post = new Post();
+        post.setDate(date);
+        post.setUser(user);
+
+        return post;
+    }
+
 }

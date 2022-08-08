@@ -4,6 +4,7 @@ import com.nongboo.flowery.entity.Post;
 import com.nongboo.flowery.entity.Todo;
 import com.nongboo.flowery.service.PostService;
 import com.nongboo.flowery.service.UserService;
+import com.nongboo.flowery.util.Header;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/post")
 public class PostController {
 
     @Autowired
@@ -21,21 +21,30 @@ public class PostController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/v1")
-    public CreatePostResponse createPostV1(@RequestBody CreatePostRequest request){
-        Post post = new Post();
-        post.setUser(userService.findOne(request.id));
-        post.setDate(request.date);
+    @PostMapping("/v1/post")
+    public Header<CreatePostResponse> createPostV1(@RequestBody CreatePostRequest request){
+        try{
+            Post post = new Post();
+            post.setUser(userService.findOne(request.id));
+            post.setDate(request.date);
 
-        Post result = postService.createPost(post);
-        return new CreatePostResponse(result.getId());
+            Post result = postService.createPost(post);
+            return Header.SUCCESS(new CreatePostResponse(result.getId()));
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
     }
 
-    @GetMapping("/v1/{id}")
-    public PostDTO getPostV1(@PathVariable long id){
-        Post post = postService.findOne(id);
+    @GetMapping("/v1/post/{id}")
+    public Header<PostDTO> getPostV1(@PathVariable long id){
+        try{
+            Post post = postService.findOne(id);
 
-        return new PostDTO(post.getId(), post.getTodoList(), post.getDate());
+            return Header.SUCCESS(new PostDTO(post.getId(), post.getTodoList(), post.getDate()));
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
+
     }
 
     @Data
