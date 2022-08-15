@@ -1,5 +1,7 @@
 package com.nongboo.flowery.controller;
 
+import com.nongboo.flowery.entity.DTO.PostDTO;
+import com.nongboo.flowery.entity.DTO.TodoDTO;
 import com.nongboo.flowery.entity.Post;
 import com.nongboo.flowery.entity.Todo;
 import com.nongboo.flowery.service.PostService;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PostController {
@@ -39,8 +42,11 @@ public class PostController {
     public Header<PostDTO> getPostV1(@PathVariable long id){
         try{
             Post post = postService.findOne(id);
+            List<TodoDTO> todoDTOList = post.getTodoList().stream()
+                    .map(m-> new TodoDTO(m.getId(), m.getContent(), m.getProgress(), m.getPost().getDate()))
+                    .collect(Collectors.toList());
 
-            return Header.SUCCESS(new PostDTO(post.getId(), post.getTodoList(), post.getDate()));
+            return Header.SUCCESS(new PostDTO(post.getId(), todoDTOList, post.getDate()));
         }catch (Exception e){
             return Header.FAIL(e);
         }
@@ -57,14 +63,6 @@ public class PostController {
     @AllArgsConstructor
     static class CreatePostResponse{
         private long id;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class PostDTO{
-        private long id;
-        private List<Todo> todoList;
-        private String date;
     }
 
 }

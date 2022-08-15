@@ -1,5 +1,6 @@
 package com.nongboo.flowery.service;
 
+import com.nongboo.flowery.entity.DTO.TodoDTO;
 import com.nongboo.flowery.entity.Post;
 import com.nongboo.flowery.entity.Todo;
 import com.nongboo.flowery.entity.User;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,19 @@ public class TodoServiceImpl implements TodoService{
 
     @Autowired
     private UserRepository userRepository;
+
+
+    @Override
+    public Todo getTodo(long id) {
+        Todo todo = todoRepository.findTodoById(id);
+        return todo;
+    }
+
+    @Override
+    public List<Todo> getAllTodoByUserId(long userId) {
+        return null;
+    }
+
 
     @Override
     @Transactional
@@ -41,12 +56,33 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public Todo updateTodo(Todo todo) {
-        return null;
+    @Transactional
+    public Todo updateTodo(long userId, TodoDTO todoDTO) {
+
+        Todo todo = todoRepository.findTodoById(todoDTO.getId());
+        User user = userRepository.findUserById(userId);
+
+        Optional<Post> postOptional = postRepository.findPostByUserIdAndDate(userId, todoDTO.getDate());
+
+        Post post = postOptional.orElseGet(() -> Post.createPost(todoDTO.getDate(), user));
+        postRepository.save(post);
+
+        todo.setPost(post);
+        todo.setContent(todoDTO.getContent());
+        todo.setProgress(todoDTO.getProgress());
+
+        return todoRepository.save(todo);
     }
 
     @Override
-    public Todo deleteTodo(Todo todo) {
-        return null;
+    @Transactional
+    public long deleteTodo(long id) {
+        Todo todo = todoRepository.findTodoById(id);
+        todo.delete();
+        todoRepository.delete(todo);
+        return id;
     }
+
+
+
 }
