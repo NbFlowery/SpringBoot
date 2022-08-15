@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -16,16 +18,27 @@ public class Post {
     @Column(name = "post_id")
     private Long id;
 
-    @CreatedDate
-    @Column(updatable = false, nullable = false)
-    private LocalDateTime date; //이건 기간인거면 따로 클래스로 뺴야하는가
-
-    private String content;
+    private String date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    //Category 관계를 어떻게 짜야 할까
-    //할일 완료 퍼센트
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Todo> todoList = new ArrayList();
+
+
+    public void setUser(User user){
+        this.user = user;
+        user.getPosts().add(this);
+    }
+
+    public static Post createPost(String date, User user){
+        Post post = new Post();
+        post.setDate(date);
+        post.setUser(user);
+
+        return post;
+    }
+
 }
