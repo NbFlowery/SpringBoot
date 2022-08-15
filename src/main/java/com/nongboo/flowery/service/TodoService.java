@@ -9,7 +9,7 @@ public interface TodoService {
 
     Todo getTodo(long id);
 
-    List<Todo> getAllTodoByUserId(long userId);
+    List<TodoDTO> getTodoByUserIdAndDate(long userId, String date);
 
     Todo createTodo(long userId, String date, String content);
 

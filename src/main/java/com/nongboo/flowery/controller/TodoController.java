@@ -9,13 +9,15 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class TodoController {
 
     @Autowired
     private TodoService todoService;
 
-    @GetMapping("v1/todo/{id}")
+    @GetMapping("/v1/todo/{id}")
     public Header<TodoDTO> getTodoV1(@PathVariable long id){
         try{
             Todo todo = todoService.getTodo(id);
@@ -23,6 +25,17 @@ public class TodoController {
                 return Header.FAIL(new Exception());
             else
                 return Header.SUCCESS(new TodoDTO(todo.getId(), todo.getContent(), todo.getProgress(), todo.getPost().getDate()));
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
+    }
+
+    @GetMapping("/v1/todo")
+    public Header<List<TodoDTO>> getTodoByUserIdAndDateV1(@RequestParam long userId, @RequestParam String date){
+        try{
+            String formattedDate = date.replace("-", "/");
+            return Header.SUCCESS(todoService.getTodoByUserIdAndDate(userId, formattedDate));
+
         }catch (Exception e){
             return Header.FAIL(e);
         }

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoServiceImpl implements TodoService{
@@ -34,8 +36,20 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<Todo> getAllTodoByUserId(long userId) {
-        return null;
+    public List<TodoDTO> getTodoByUserIdAndDate(long userId, String date) {
+        List<TodoDTO> todoList = new ArrayList<>();
+        List<Post> postList = postRepository.findPostByUserIdAndMonth(userId, date);
+
+        System.out.println(date);
+
+        for(Post post : postList){
+            List<Todo> todos = post.getTodoList();
+            for(Todo todo : todos) {
+                todoList.add(new TodoDTO(todo.getId(), todo.getContent(), todo.getProgress(), todo.getPost().getDate()));
+            }
+        }
+
+        return todoList;
     }
 
 
