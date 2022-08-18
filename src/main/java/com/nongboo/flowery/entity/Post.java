@@ -27,12 +27,20 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Todo> todoList = new ArrayList();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bed_id")
+    private FlowerBed flowerBed;
+
 
     public void setUser(User user){
         this.user = user;
         user.getPosts().add(this);
     }
 
+    public void setFlowerBed(FlowerBed flowerBed){
+        this.flowerBed = flowerBed;
+        flowerBed.getPosts().add(this);
+    }
     public static Post createPost(String date, User user){
         Post post = new Post();
         post.setDate(date);
