@@ -4,6 +4,9 @@ spring:
     url: jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_1e64ccce06bec53?serverTimezone=Asia/Seoul&reconnect=true
     username: b7d24238db29fe
     password: 39243154
+  config:
+    import:
+      classpath:application-oauth.yml
 
   jpa:
     hibernate.ddl-auto: update
