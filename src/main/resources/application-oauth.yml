@@ -3,5 +3,5 @@ OAuth2:
     url: https://accounts.google.com/o/oauth2/v2/auth
     client-id: 1024446360334-p11sjfb4eqh3rj0rogpg1ru95ns2mgqt.apps.googleusercontent.com
     client-secret: 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
-    callback-url: http://flowery.herokuapp.com/accounts/auth/google/callback
+    callback-url: https://flowery.herokuapp.com/accounts/auth/google/callback
     scope: profile email
