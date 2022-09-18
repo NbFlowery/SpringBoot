@@ -1,4 +1,4 @@
-package com.nongboo.flowery.util;
+package com.nongboo.flowery.util.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

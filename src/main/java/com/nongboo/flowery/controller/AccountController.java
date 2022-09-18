@@ -5,7 +5,7 @@ import com.nongboo.flowery.login.Constant;
 import com.nongboo.flowery.login.Service.OAuthService;
 import com.nongboo.flowery.login.SocialOAuthRes;
 import com.nongboo.flowery.util.Header;
-import com.nongboo.flowery.util.NoAuth;
+import com.nongboo.flowery.util.auth.NoAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

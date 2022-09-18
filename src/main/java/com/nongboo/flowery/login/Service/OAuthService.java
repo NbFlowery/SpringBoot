@@ -7,7 +7,7 @@ import com.nongboo.flowery.login.google.GoogleOAuthToken;
 import com.nongboo.flowery.login.google.GoogleOauth;
 import com.nongboo.flowery.login.google.GoogleUser;
 import com.nongboo.flowery.repository.UserRepository;
-import com.nongboo.flowery.util.JWTService;
+import com.nongboo.flowery.util.auth.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.rmi.server.ExportException;
 
 @Service
 @RequiredArgsConstructor
