@@ -57,35 +57,37 @@ public class TodoServiceImpl implements TodoService{
     @Transactional
     public Todo createTodo(long userId, String date, String content) {
 
-        User user = userRepository.findUserById(userId);
-        Optional<Post> postOptional = postRepository.findPostByUserIdAndDate(userId, date);
+//        User user = userRepository.findUserById(userId);
+//        Optional<Post> postOptional = postRepository.findPostByUserIdAndDate(userId, date);
+//
+//        Post post = postOptional.orElseGet(() -> Post.createPost(date, user));;
+//
+//        Todo todo = Todo.createTodo(post, content);
+//
+//        todoRepository.save(todo);
 
-        Post post = postOptional.orElseGet(() -> Post.createPost(date, user));;
-
-        Todo todo = Todo.createTodo(post, content);
-
-        todoRepository.save(todo);
-
-        return todo;
+        return null;
     }
 
     @Override
     @Transactional
     public Todo updateTodo(long userId, TodoDTO todoDTO) {
 
-        Todo todo = todoRepository.findTodoById(todoDTO.getId());
-        User user = userRepository.findUserById(userId);
+//        Todo todo = todoRepository.findTodoById(todoDTO.getId());
+//        User user = userRepository.findUserById(userId);
+//
+//        Optional<Post> postOptional = postRepository.findPostByUserIdAndDate(userId, todoDTO.getDate());
+//
+//        Post post = postOptional.orElseGet(() -> Post.createPost(todoDTO.getDate(), user));
+//        postRepository.save(post);
+//
+//        todo.setPost(post);
+//        todo.setContent(todoDTO.getContent());
+//        todo.setProgress(todoDTO.getProgress());
 
-        Optional<Post> postOptional = postRepository.findPostByUserIdAndDate(userId, todoDTO.getDate());
+//        return todoRepository.save(todo);
 
-        Post post = postOptional.orElseGet(() -> Post.createPost(todoDTO.getDate(), user));
-        postRepository.save(post);
-
-        todo.setPost(post);
-        todo.setContent(todoDTO.getContent());
-        todo.setProgress(todoDTO.getProgress());
-
-        return todoRepository.save(todo);
+        return null;
     }
 
     @Override

@@ -1,9 +1,15 @@
-package com.nongboo.flowery.login;
+package com.nongboo.flowery.login.Service;
 
+import com.nongboo.flowery.entity.User;
+import com.nongboo.flowery.login.Constant;
+import com.nongboo.flowery.login.SocialOAuthRes;
 import com.nongboo.flowery.login.google.GoogleOAuthToken;
 import com.nongboo.flowery.login.google.GoogleOauth;
 import com.nongboo.flowery.login.google.GoogleUser;
+import com.nongboo.flowery.repository.UserRepository;
+import com.nongboo.flowery.util.JWTService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +20,12 @@ import java.rmi.server.ExportException;
 @Service
 @RequiredArgsConstructor
 public class OAuthService { //로그인 방식에 따라 해당 클래스 호출
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JWTService jwtService;
 
     private final GoogleOauth googleOauth;
     private final HttpServletResponse response;
@@ -47,15 +59,19 @@ public class OAuthService { //로그인 방식에 따라 해당 클래스 호출
                 //다시 JSON 형식의 응답 객체를 자바 객체로 역직렬화한다.
                 GoogleUser googleUser = googleOauth.getUserInfo(userInfoResponse);
 
-                String userId = googleUser.getEmail();
-
-                //우리 서버의 db와 대조하여 해당 user가 존재하는 지 확인한다.
-
-                if (userId != null) {
-                    //서버에 user가 존재하면 앞으로 회원 인가 처리를 위한 jwtToken을 발급한다.
-                    return new SocialOAuthRes("jwtToken", userId, oAuthToken.getAccess_token(), oAuthToken.getToken_type());
-                } else {
-                    // 예외처리
+                String userEmail = googleUser.getEmail();
+                //db와 대조하여 해당 user가 존재하는 지 확인한다.
+                Long userId = userRepository.findUserIdByUserEmail(userEmail);
+                System.out.println(userId);
+                if (userId == null) {
+                    //db에 user가 존재하지 않으면 DB에 user 정보 저장 및 앞으로 회원 인가 처리를 위한 jwtToken을 발급한다.
+                    User user = userRepository.save(User.createUser("", userEmail));
+                    System.out.println(user.getId().intValue());
+                    String jwtToken = jwtService.createJWT(user.getId().intValue());
+                    return new SocialOAuthRes(jwtToken, userEmail, oAuthToken.getAccess_token(), oAuthToken.getToken_type());
+                }else{
+                    String jwtToken = jwtService.createJWT(userId.intValue());
+                    return new SocialOAuthRes(jwtToken, userEmail, oAuthToken.getAccess_token(), oAuthToken.getToken_type());
                 }
             }
             default: {
