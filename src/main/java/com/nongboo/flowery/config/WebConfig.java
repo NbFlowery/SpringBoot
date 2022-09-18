@@ -1,10 +1,9 @@
 package com.nongboo.flowery.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nongboo.flowery.util.AuthenticationInterceptor;
-import com.nongboo.flowery.util.JWTService;
+import com.nongboo.flowery.util.auth.AuthenticationInterceptor;
+import com.nongboo.flowery.util.auth.JWTService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

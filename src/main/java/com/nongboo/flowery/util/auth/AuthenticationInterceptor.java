@@ -1,4 +1,4 @@
-package com.nongboo.flowery.util;
+package com.nongboo.flowery.util.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nongboo.flowery.service.UserService;
