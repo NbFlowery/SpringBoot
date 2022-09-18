@@ -1,7 +1,11 @@
-package com.nongboo.flowery.login;
+package com.nongboo.flowery.controller;
 
 
+import com.nongboo.flowery.login.Constant;
+import com.nongboo.flowery.login.Service.OAuthService;
+import com.nongboo.flowery.login.SocialOAuthRes;
 import com.nongboo.flowery.util.Header;
+import com.nongboo.flowery.util.NoAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +22,14 @@ public class AccountController {
     public OAuthService oAuthService;
 
 
+    @NoAuth
     @GetMapping("/auth/{socialLoginType}")
     public void socialLoginRedirect(@PathVariable(name = "socialLoginType") String socialLoginPath) throws IOException{
         Constant.SocialLoginType socialLoginType = Constant.SocialLoginType.valueOf(socialLoginPath.toUpperCase(Locale.ROOT));
         oAuthService.request(socialLoginType);
     }
 
+    @NoAuth
     @ResponseBody
     @GetMapping("/auth/{socialLoginType}/callback")
     public Header<SocialOAuthRes> callBack(@PathVariable(name = "socialLoginType") String socialLoginPath,
